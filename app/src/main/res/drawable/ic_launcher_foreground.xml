@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Invoice Sheet background -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,26 C31.8,26 30,27.8 30,30 L30,78 C30,80.2 31.8,82 34,82 L74,82 C76.2,82 78,80.2 78,78 L78,38 L66,26 L34,26 Z" />
+    <!-- Folded corner -->
+    <path
+        android:fillColor="#E2E8F0"
+        android:pathData="M66,26 L66,38 L78,38 Z" />
+    <!-- Header banner bar -->
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M36,44 L72,44 L72,48 L36,48 Z" />
+    <!-- Item lines -->
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M36,53 L58,53 L58,56 L36,56 Z" />
+    <path
+        android:fillColor="#3B82F6"
+        android:pathData="M64,53 L72,53 L72,56 L64,56 Z" />
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M36,60 L54,60 L54,63 L36,63 Z" />
+    <path
+        android:fillColor="#3B82F6"
+        android:pathData="M64,60 L72,60 L72,63 L64,63 Z" />
+    <!-- Total badge / checkmark circle -->
+    <path
+        android:fillColor="#10B981"
+        android:pathData="M62,68 A8,8 0 1,1 78,68 A8,8 0 1,1 62,68" />
+    <!-- Checkmark symbol -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M66.5,68 L69,70.5 L74,65.5 L75.2,66.7 L69,72.9 L65.3,69.2 Z" />
+</vector>

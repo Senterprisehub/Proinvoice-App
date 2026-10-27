@@ -1,0 +1,6 @@
+{
+  "name": "ProInvoice",
+  "description": "Professional invoice & billing mobile app with item catalog, business profiles, customizable layouts, taxes, discounts, PDF/Print, and admin management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
