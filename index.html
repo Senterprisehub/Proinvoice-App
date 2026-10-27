@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProInvoice | Smart Invoicing for Modern Businesses</title>
+    <meta
+      name="description"
+      content="Create, customize, and share stunning invoices in seconds with ProInvoice. Manage multiple business profiles, build a reusable item catalog, calculate GST/taxes and discounts automatically, and export professional PDF invoices offline."
+    />
+    <style>
+      :root {
+        --bg: #07111f;
+        --bg-soft: #0d1b2a;
+        --panel: rgba(15, 23, 42, 0.8);
+        --panel-strong: #0f172a;
+        --card: rgba(15, 23, 42, 0.8);
+        --primary: #4f8cff;
+        --primary-2: #6ee7b7;
+        --accent: #f59e0b;
+        --text: #e5eefb;
+        --muted: #afc0da;
+        --line: rgba(148, 163, 184, 0.24);
+        --success: #34d399;
+        --shadow: 0 20px 50px rgba(5, 10, 20, 0.45);
+      }
+
+      * { box-sizing: border-box; }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(79, 140, 255, 0.22), transparent 30%),
+          radial-gradient(circle at right, rgba(110, 231, 183, 0.12), transparent 25%),
+          var(--bg);
+        color: var(--text);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(18px);
+        background: rgba(7, 17, 31, 0.72);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 76px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        box-shadow: 0 14px 28px rgba(79, 140, 255, 0.35);
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #04101b;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 22px;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .nav-links a:hover { color: var(--text); }
+
+      .button-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 48px;
+        padding: 0 22px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        font-weight: 700;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 30px rgba(13, 27, 42, 0.18);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary), #2972d9);
+        border-color: rgba(79, 140, 255, 0.6);
+        color: white;
+      }
+
+      .btn-secondary {
+        background: rgba(15, 23, 42, 0.55);
+        color: var(--text);
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: var(--text);
+      }
+
+      .hero {
+        padding: 68px 0 40px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 48px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        border: 1px solid rgba(110, 231, 183, 0.4);
+        background: rgba(110, 231, 183, 0.08);
+        color: #d7f9ed;
+        border-radius: 999px;
+        padding: 9px 14px;
+        font-size: 0.84rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      h1 {
+        margin: 22px 0 18px;
+        font-size: clamp(2.7rem, 5vw, 5rem);
+        line-height: 0.95;
+        letter-spacing: -0.06em;
+      }
+
+      .headline-highlight {
+        background: linear-gradient(135deg, #cfe3ff 0%, #7dd3fc 25%, #86efac 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .hero-copy p {
+        max-width: 700px;
+        margin: 0 0 26px;
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.7;
+      }
+
+      .stats-row {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        flex-wrap: wrap;
+        margin-top: 26px;
+      }
+
+      .stat-pill {
+        border: 1px solid var(--line);
+        background: rgba(15, 23, 42, 0.6);
+        border-radius: 14px;
+        padding: 12px 16px;
+        min-width: 150px;
+      }
+
+      .stat-pill b {
+        display: block;
+        font-size: 1.3rem;
+        margin-bottom: 2px;
+      }
+
+      .stat-pill span {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .device-card {
+        position: relative;
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(12, 22, 35, 0.95), rgba(9, 18, 29, 0.98));
+        border-radius: 34px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        padding: 18px;
+      }
+
+      .device-screen {
+        border-radius: 26px;
+        background: linear-gradient(180deg, #122235 0%, #0b1726 100%);
+        border: 1px solid rgba(160, 175, 202, 0.25);
+        min-height: 620px;
+        padding: 22px 18px 16px;
+      }
+
+      .screen-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 18px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+      }
+
+      .window-dots {
+        display: flex;
+        gap: 8px;
+      }
+
+      .window-dots span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: block;
+      }
+
+      .window-dots span:nth-child(1){ background: #ff5f57; }
+      .window-dots span:nth-child(2){ background: #febc2e; }
+      .window-dots span:nth-child(3){ background: #28c840; }
+
+      .invoice-preview {
+        margin-top: 20px;
+        background: rgba(11, 23, 38, 0.78);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        border-radius: 22px;
+        padding: 18px;
+      }
+
+      .invoice-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 18px;
+        margin-bottom: 20px;
+      }
+
+      .company-logo {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #a5b4fc, #67e8f9);
+        display: grid;
+        place-items: center;
+        color: #081521;
+        font-weight: 800;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: rgba(52, 211, 153, 0.12);
+        color: #baf7db;
+        border: 1px solid rgba(52, 211, 153, 0.2);
+        font-size: 0.76rem;
+        font-weight: 700;
+      }
+
+      .invoice-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .invoice-table th,
+      .invoice-table td {
+        text-align: left;
+        padding: 12px 10px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+        color: var(--muted);
+      }
+
+      .invoice-table thead th {
+        color: rgba(229, 238, 251, 0.8);
+        font-size: 0.73rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .amount {
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .mini-total {
+        margin-top: 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid rgba(148, 163, 184, 0.12);
+        padding-top: 16px;
+      }
+
+      .mini-total strong {
+        font-size: 1.4rem;
+      }
+
+      .section {
+        padding: 72px 0;
+      }
+
+      .section-head {
+        margin-bottom: 28px;
+      }
+
+      .section-kicker {
+        color: #9ad8ff;
+        font-size: 0.8rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        font-weight: 700;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(2.1rem, 3vw, 3rem);
+        letter-spacing: -0.05em;
+      }
+
+      .subtle {
+        color: var(--muted);
+        max-width: 700px;
+        line-height: 1.7;
+        margin: 14px 0 0;
+      }
+
+      .feature-grid,
+      .steps-grid,
+      .benefits-grid,
+      .download-grid {
+        display: grid;
+        gap: 22px;
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .card {
+        background: rgba(15, 23, 42, 0.72);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 26px 22px;
+        box-shadow: 0 12px 30px rgba(2, 7, 16, 0.18);
+      }
+
+      .icon-box {
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 18px;
+        background: linear-gradient(135deg, rgba(79, 140, 255, 0.18), rgba(110, 231, 183, 0.18));
+        border: 1px solid rgba(111, 168, 255, 0.24);
+        font-size: 1.3rem;
+      }
+
+      .card h3 {
+        margin: 0 0 10px;
+        font-size: 1.35rem;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .steps-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .step {
+        position: relative;
+        padding-top: 18px;
+      }
+
+      .step-index {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(79, 140, 255, 0.24), rgba(110, 231, 183, 0.18));
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        font-weight: 800;
+        color: #dcecff;
+        margin-bottom: 18px;
+      }
+
+      .benefits-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .benefit {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .checkmark {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        border-radius: 50%;
+        background: rgba(52, 211, 153, 0.12);
+        border: 1px solid rgba(52, 211, 153, 0.2);
+        display: grid;
+        place-items: center;
+        color: #9af3c9;
+        font-weight: 700;
+      }
+
+      .download-grid {
+        grid-template-columns: 1.35fr 0.65fr;
+        align-items: center;
+      }
+
+      .download-panel {
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.82), rgba(14, 20, 30, 0.9));
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        padding: 28px;
+      }
+
+      .version-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: rgba(79, 140, 255, 0.12);
+        color: #d7e8ff;
+        border: 1px solid rgba(79, 140, 255, 0.2);
+        font-size: 0.74rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .release-meta {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin-top: 14px;
+      }
+
+      .release-notes {
+        margin-top: 18px;
+        color: var(--muted);
+        line-height: 1.8;
+        font-size: 0.98rem;
+      }
+
+      .download-actions {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 24px;
+        flex-wrap: wrap;
+      }
+
+      .stats-box {
+        display: grid;
+        gap: 16px;
+        padding: 18px;
+      }
+
+      .mini-stat {
+        padding: 14px 16px;
+        border-radius: 18px;
+        background: rgba(7, 17, 31, 0.9);
+        border: 1px solid var(--line);
+      }
+
+      .mini-stat b {
+        display: block;
+        font-size: 1.5rem;
+        margin-bottom: 6px;
+      }
+
+      .mini-stat span {
+        color: var(--muted);
+      }
+
+      .footer {
+        border-top: 1px solid var(--line);
+        padding: 28px 0 42px;
+        color: var(--muted);
+      }
+
+      .footer-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      @media (max-width: 1000px) {
+        .hero-grid,
+        .download-grid,
+        .feature-grid,
+        .steps-grid,
+        .benefits-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-links {
+          display: none;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .nav {
+          gap: 12px;
+        }
+
+        .button-row {
+          width: 100%;
+          justify-content: flex-start;
+        }
+
+        .btn {
+          flex: 1;
+          min-width: 0;
+        }
+
+        h1 {
+          font-size: 2.6rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav">
+        <a href="#top" class="brand" aria-label="ProInvoice home">
+          <span class="brand-mark">P</span>
+          <span>ProInvoice</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#features">Features</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#why">Why ProInvoice</a>
+          <a href="#download">Download</a>
+        </nav>
+
+        <div class="button-row">
+          <a class="btn btn-secondary" href="#download">See release</a>
+          <a class="btn btn-primary" id="headerDownloadLink" href="https://github.com/Senterprisehub/Proinvoice-App/releases/latest" target="_blank" rel="noopener noreferrer">Download App</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <span class="eyebrow">Professional invoicing system</span>
+            <h1>
+              <span class="headline-highlight">Invoice smarter.</span><br />
+              Look sharper.<br />
+              Get paid faster.
+            </h1>
+            <p>
+              ProInvoice helps freelancers, agencies, contractors, and growing businesses create tax-ready invoices,
+              manage client billing data, and export polished PDF documents in seconds — all from a fast, secure, offline-first Android app.
+            </p>
+
+            <div class="button-row">
+              <a class="btn btn-primary" id="heroDownloadLink" href="https://github.com/Senterprisehub/Proinvoice-App/releases/latest" target="_blank" rel="noopener noreferrer">Download latest APK</a>
+              <a class="btn btn-ghost" href="#features">Explore features</a>
+            </div>
+
+            <div class="stats-row" aria-label="Product highlights">
+              <div class="stat-pill">
+                <b>8</b>
+                <span>Designer PDF templates</span>
+              </div>
+              <div class="stat-pill">
+                <b>100%</b>
+                <span>Offline-ready</span>
+              </div>
+              <div class="stat-pill">
+                <b>Multi</b>
+                <span>Business profiles</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="device-card" aria-label="ProInvoice app preview">
+            <div class="device-screen">
+              <div class="screen-header">
+                <div class="window-dots"><span></span><span></span><span></span></div>
+                <span style="color: var(--muted); font-size: 0.8rem; font-weight: 600;">ProInvoice</span>
+              </div>
+
+              <div class="invoice-preview">
+                <div class="invoice-top">
+                  <div>
+                    <div class="company-logo">P</div>
+                  </div>
+                  <div style="text-align: right;">
+                    <div class="badge">PAID</div>
+                    <div style="margin-top: 10px; color: var(--muted); font-size: 0.8rem;">INV-2048</div>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; color: var(--muted); margin-bottom: 18px;">
+                  <div>
+                    <strong style="display: block; color: var(--text); margin-bottom: 6px;">From</strong>
+                    Brightwave Studio
+                  </div>
+                  <div style="text-align: right;">
+                    <strong style="display: block; color: var(--text); margin-bottom: 6px;">To</strong>
+                    Nexora Labs
+                  </div>
+                </div>
+
+                <table class="invoice-table" aria-label="Invoice line items">
+                  <thead>
+                    <tr>
+                      <th>Service</th>
+                      <th>Qty</th>
+                      <th>Rate</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Brand Design</td>
+                      <td>1</td>
+                      <td class="amount">₹6,500</td>
+                    </tr>
+                    <tr>
+                      <td>UI System</td>
+                      <td>2</td>
+                      <td class="amount">₹9,200</td>
+                    </tr>
+                    <tr>
+                      <td>Consulting</td>
+                      <td>1</td>
+                      <td class="amount">₹12,000</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="mini-total">
+                  <span style="color: var(--muted);">Total</span>
+                  <strong>₹27,700</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="container">
+          <div class="section-head">
+            <div class="section-kicker">Built for modern billing</div>
+            <h2>Everything you need to run a sharper billing workflow</h2>
+          </div>
+
+          <div class="feature-grid">
+            <article class="card">
+              <div class="icon-box">✦</div>
+              <h3>Designer PDF templates</h3>
+              <p>Choose from eight premium PDF invoice layouts with live preview-ready aesthetics that help your business look polished and credible.</p>
+            </article>
+
+            <article class="card">
+              <div class="icon-box">☰</div>
+              <h3>Business profile management</h3>
+              <p>Manage multiple company profiles, personalize branding, and switch between business identities without re-entering details.</p>
+            </article>
+
+            <article class="card">
+              <div class="icon-box">◎</div>
+              <h3>Reusable catalogs</h3>
+              <p>Store clients, services, items, and pricing in a centralized catalog for faster invoice creation and fewer repetitive tasks.</p>
+            </article>
+
+            <article class="card">
+              <div class="icon-box">%</div>
+              <h3>Tax and discount automation</h3>
+              <p>Apply GST/VAT/sales tax, discounts, and automatic recalculation so your totals stay accurate without manual math.</p>
+            </article>
+
+            <article class="card">
+              <div class="icon-box">▣</div>
+              <h3>Instant PDF export</h3>
+              <p>Generate print-ready, shareable PDF invoices and send them via email, messaging apps, or printer workflows in one tap.</p>
+            </article>
+
+            <article class="card">
+              <div class="icon-box">🔒</div>
+              <h3>Offline-first privacy</h3>
+              <p>Keep your financial records local, secure, and accessible anywhere without depending on internet connectivity.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="workflow">
+        <div class="container">
+          <div class="section-head">
+            <div class="section-kicker">How it works</div>
+            <h2>From quote to payment in a few taps</h2>
+          </div>
+
+          <div class="steps-grid">
+            <article class="card step">
+              <div class="step-index">1</div>
+              <h3>Create your invoice</h3>
+              <p>Pick a business profile, add client details, and choose from a reusable item catalog to prepare a clean invoice.</p>
+            </article>
+
+            <article class="card step">
+              <div class="step-index">2</div>
+              <h3>Customize and calculate</h3>
+              <p>Apply discounts, taxes, notes, and payment terms with automatic calculations that keep totals consistent and professional.</p>
+            </article>
+
+            <article class="card step">
+              <div class="step-index">3</div>
+              <h3>Export or print</h3>
+              <p>Generate export-ready PDF files, share them instantly, or print directly from your device without third-party watermarks.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="why">
+        <div class="container">
+          <div class="section-head">
+            <div class="section-kicker">Why teams choose ProInvoice</div>
+            <h2>Professional invoicing without the complexity</h2>
+          </div>
+
+          <div class="benefits-grid">
+            <div class="card benefit">
+              <div class="checkmark">✓</div>
+              <div>
+                <h3>Built for business credibility</h3>
+                <p>Present polished files that make an immediate impression on clients, vendors, and partners.</p>
+              </div>
+            </div>
+
+            <div class="card benefit">
+              <div class="checkmark">✓</div>
+              <div>
+                <h3>Fast repeat workflows</h3>
+                <p>Use saved client and service data to reduce repetitive invoicing steps and save time each week.</p>
+              </div>
+            </div>
+
+            <div class="card benefit">
+              <div class="checkmark">✓</div>
+              <div>
+                <h3>Tax-ready accuracy</h3>
+                <p>Automatically handle GST, discounts, and pricing logic so financial calculations remain consistent.</p>
+              </div>
+            </div>
+
+            <div class="card benefit">
+              <div class="checkmark">✓</div>
+              <div>
+                <h3>Professional offline access</h3>
+                <p>Work from anywhere with a secure local-first environment built for fast, uninterrupted day-to-day billing.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="download">
+        <div class="container download-grid">
+          <div class="download-panel">
+            <span class="version-chip" id="latestVersionTag">Latest release</span>
+            <h2 style="margin-top: 18px;">Download the latest ProInvoice release</h2>
+
+            <div class="release-meta">
+              <span id="releaseDate">Updating…</span>
+              <span>•</span>
+              <span id="releaseStatus">Fetching latest GitHub release</span>
+            </div>
+
+            <div class="release-notes" id="releaseNotes">
+              Loading the newest version details from GitHub releases…
+            </div>
+
+            <div class="download-actions">
+              <a class="btn btn-primary" id="downloadButton" href="https://github.com/Senterprisehub/Proinvoice-App/releases/latest" target="_blank" rel="noopener noreferrer">Download APK</a>
+              <a class="btn btn-secondary" href="https://github.com/Senterprisehub/Proinvoice-App/releases" target="_blank" rel="noopener noreferrer">View all releases</a>
+            </div>
+          </div>
+
+          <div class="card stats-box">
+            <div class="mini-stat">
+              <b>8</b>
+              <span>Premium PDF styles</span>
+            </div>
+            <div class="mini-stat">
+              <b>100%</b>
+              <span>Offline-ready workflow</span>
+            </div>
+            <div class="mini-stat">
+              <b>Fast</b>
+              <span>Billing in under a minute</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div class="brand">
+          <span class="brand-mark">P</span>
+          <span>ProInvoice</span>
+        </div>
+        <div>Smart invoicing for freelancers, agencies, and modern businesses.</div>
+      </div>
+    </footer>
+
+    <script>
+      const repoOwner = "Senterprisehub";
+      const repoName = "Proinvoice-App";
+      const latestReleaseUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/releases/latest`;
+
+      const latestVersionTag = document.getElementById("latestVersionTag");
+      const releaseDate = document.getElementById("releaseDate");
+      const releaseStatus = document.getElementById("releaseStatus");
+      const releaseNotes = document.getElementById("releaseNotes");
+      const downloadButton = document.getElementById("downloadButton");
+      const headerDownloadLink = document.getElementById("headerDownloadLink");
+      const heroDownloadLink = document.getElementById("heroDownloadLink");
+
+      function formatDate(dateString) {
+        if (!dateString) return "Latest release";
+        return new Date(dateString).toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        });
+      }
+
+      function updateDownloadLinks(url, label) {
+        const finalLabel = label || "Download APK";
+        downloadButton.href = url;
+        downloadButton.textContent = finalLabel;
+        headerDownloadLink.href = url;
+        heroDownloadLink.href = url;
+      }
+
+      async function loadLatestRelease() {
+        try {
+          const response = await fetch(latestReleaseUrl, {
+            headers: { Accept: "application/vnd.github+json" }
+          });
+
+          if (!response.ok) {
+            throw new Error("Unable to fetch release metadata");
+          }
+
+          const release = await response.json();
+          const asset = release.assets && release.assets.find((item) => /apk|aab|zip|exe/i.test(item.name));
+          const versionText = release.tag_name || "Latest release";
+          const displayUrl = asset ? asset.browser_download_url : release.html_url;
+          const displayName = asset ? `Download ${asset.name}` : "Download latest release";
+
+          latestVersionTag.textContent = versionText;
+          releaseDate.textContent = formatDate(release.published_at || release.created_at);
+          releaseStatus.textContent = release.prerelease ? "Pre-release" : "Stable release";
+
+          const bodyText = release.body && release.body.trim()
+            ? release.body.replace(/\r\n/g, "\n").split("\n").slice(0, 5).join("\n")
+            : "Professional, offline-ready invoicing app with tax, branding, PDF export, and multi-business support.";
+          releaseNotes.textContent = bodyText;
+
+          updateDownloadLinks(displayUrl, displayName);
+        } catch (error) {
+          latestVersionTag.textContent = "v1.0";
+          releaseDate.textContent = "2026-10-27";
+          releaseStatus.textContent = "Stable release";
+          releaseNotes.textContent = "Professional invoicing, tax automation, PDF export, and offline billing for freelancers and small businesses.";
+          updateDownloadLinks("https://github.com/Senterprisehub/Proinvoice-App/releases/latest", "Download latest APK");
+        }
+      }
+
+      loadLatestRelease();
+    </script>
+  </body>
+</html>
